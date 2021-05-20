@@ -1,5 +1,7 @@
 import pathlib
 
+from time import time
+
 from csv import reader
 from math import ceil
 
@@ -10,8 +12,22 @@ FILTER_DATA = False
 REDUCTION_FACTOR = 10
 
 PROJECT_DIR = pathlib.Path(__file__).parent.absolute()
-DATA_SETS = list(pathlib.Path(PROJECT_DIR).glob("*.csv"))
+DATASETS = list(pathlib.Path(PROJECT_DIR).glob("*.csv"))
 SHARES_LIST = None
+
+DATASET_TEST = False
+
+
+def measure_time(func):
+    def _time_it(*args, **kwargs):
+        start = int(round(time() * 1000))
+        try:
+            return func(*args, **kwargs)
+        finally:
+            end_ = (int(round(time() * 1000)) - start) / 1000
+            print(f"\nExecution time: {end_ if end_ > 0 else 0} s")
+
+    return _time_it
 
 
 def load_dataset(dataset: int) -> None:
@@ -135,11 +151,19 @@ def find_best_portofolio(money_invested: int, shares: list) -> None:
                 matrix[m][m_name] = best_profit_minus_cost[m_name] + [name]
                 matrix[m][m_cost] = best_profit_minus_cost[m_cost] + [cost]
 
+    print_result(best_outcome=matrix[-1])
+
 
 def main() -> None:
     global SHARES_LIST
+    global DATASETS
 
-    for dataset in DATA_SETS:
+    if DATASET_TEST:
+        DATASETS = list(pathlib.Path(PROJECT_DIR).glob("*test.csv"))
+
+    for dataset in DATASETS:
+        print("Processing: ", dataset, "\n")
+
         load_dataset(dataset=dataset)
 
         # If total cost of all shares is <= MONEY_INVESTED, then all shares
@@ -147,6 +171,7 @@ def main() -> None:
         # on great MONEY_INVESTED values.
 
         find_best_portofolio(money_invested=MONEY_INVESTED, shares=SHARES_LIST)
+        break
 
 
 if __name__ == "__main__":

@@ -1,13 +1,12 @@
 import pathlib
 
 from csv import reader
-from itertools import combinations
 
 
 MONEY_INVESTED = 500
 
 PROJECT_DIR = pathlib.Path(__file__).parent.absolute()
-DATA_SETS = list(pathlib.Path(PROJECT_DIR).glob("*.csv"))
+DATASETS = list(pathlib.Path(PROJECT_DIR).glob("*.csv"))
 SHARES_LIST = None
 
 
@@ -32,6 +31,7 @@ def find_best_portofolio(money_invested: int, shares: list) -> None:
 
         possible_portofolios = combinations(shares, i)
         for portofolio in possible_portofolios:
+
             portofolio_cost = sum([x[1] for x in portofolio])
 
             if portofolio_cost > money_invested:
@@ -39,17 +39,42 @@ def find_best_portofolio(money_invested: int, shares: list) -> None:
 
             portofolio_profit = sum([x[2] for x in portofolio])
 
-            if portofolio_profit != best_portofolio[0]:
+            if portofolio_profit > best_portofolio[0]:
                 portofolio_names = [x[0] for x in portofolio]
                 best_portofolio = [portofolio_profit, portofolio_names, portofolio_cost]
 
     print(best_portofolio)
 
 
+def combinations(iterable, r):
+    pool = tuple(iterable)
+    n = len(pool)
+
+    if r > n:
+        return
+    indices = list(range(r))
+
+    yield tuple(pool[i] for i in indices)
+
+    while True:
+        for i in reversed(range(r)):
+            if indices[i] != i + n - r:
+                break
+        else:
+            return
+
+        indices[i] += 1
+
+        for j in range(i + 1, r):
+            indices[j] = indices[j - 1] + 1
+
+        yield tuple(pool[i] for i in indices)
+
+
 def main() -> None:
     global SHARES_LIST
 
-    for dataset in DATA_SETS:
+    for dataset in DATASETS:
         print("Processing: ", dataset, "\n")
 
         load_dataset(dataset=dataset)
