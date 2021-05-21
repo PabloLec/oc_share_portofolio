@@ -15,8 +15,6 @@ PROJECT_DIR = pathlib.Path(__file__).parent.absolute()
 DATASETS = list(pathlib.Path(PROJECT_DIR).glob("*.csv"))
 SHARES_LIST = None
 
-DATASET_TEST = False
-
 
 def measure_time(func):
     def _time_it(*args, **kwargs):
@@ -158,9 +156,6 @@ def main() -> None:
     global SHARES_LIST
     global DATASETS
 
-    if DATASET_TEST:
-        DATASETS = list(pathlib.Path(PROJECT_DIR).glob("*test.csv"))
-
     for dataset in DATASETS:
         print("Processing: ", dataset, "\n")
 
@@ -171,7 +166,6 @@ def main() -> None:
         # on great MONEY_INVESTED values.
 
         find_best_portofolio(money_invested=MONEY_INVESTED, shares=SHARES_LIST)
-        break
 
 
 if __name__ == "__main__":
