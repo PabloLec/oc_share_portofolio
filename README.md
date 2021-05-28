@@ -9,6 +9,6 @@ Considering two datasets representing multiple *Shares* with respective *Cost* a
 Two different approaches are represented:
 - `bruteforce.py` creates all possible combinations, in the same way `itertools.combinations` do, and calculates possible profit. At the end of each iteration, this possible profit is compared to the currently highest one.
 
-- `optimized.py` uses a Dynamic Programmation method to compose the portofolio. A matrix is created to calculate, for each share, the potential profit if added at each price in range 0 to total money invested. This potential profit values are compared only with the previously considered shared and added to portofolio if more profitable. This method is again optimized to reduce the multi-dimensional matrix to a 1D array.
+- `optimized.py` uses a Dynamic Programming method to compose the portofolio. A matrix is created to calculate, for each share, the potential profit if added at each price in range 0 to total money invested. This potential profit values are compared only with the previously considered shared and added to portofolio if more profitable. This method is again optimized to reduce the multi-dimensional matrix to a 1D array.
 
 You can give a look to these slides for a more in-depth description (french): https://docs.google.com/presentation/d/16OA6zkDQef0wYIhshRBoZkC0HFBbePJbd2dAtguyvR0/edit?usp=sharing
